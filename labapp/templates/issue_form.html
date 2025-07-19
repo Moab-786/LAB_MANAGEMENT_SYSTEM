@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Issue Components</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #1f1f1f;
+      color: rgb(0, 255, 47);
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+    }
+    h2 {
+      text-align: center;
+      color: rgb(0, 255, 47);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #2b2b2b;
+    }
+    td {
+      background-color: #2a2a2a;
+    }
+    input[type="number"], select {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      background-color: #333;
+      color: #fff;
+      width: 80px;
+      text-align: center;
+    }
+    .submit-button {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .submit-button button {
+      background-color: rgb(0, 255, 47);
+      color: #000;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgb(0, 255, 47), 0 0 20px rgb(0, 255, 47);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .submit-button button:hover {
+      background-color: rgb(0, 130, 24);
+      box-shadow: 0 0 15px rgb(0, 130, 24), 0 0 30px rgb(0, 130, 24);
+      color: whitesmoke;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Issue Components to {{ student.name }}
+</header>
+
+<div class="container">
+  <h2>Select Components and Quantities</h2>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="total" value="{{ components|length }}">
+    <table>
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Component</th>
+          <th>Available</th>
+          <th>Quantity to Issue</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for component in components %}
+        <tr>
+          <td>
+            <input type="checkbox" name="selected_{{ forloop.counter0 }}">
+            <input type="hidden" name="component_id_{{ forloop.counter0 }}" value="{{ component.id }}">
+          </td>
+          <td>{{ component.name }}</td>
+          <td>{{ component.quantity_available }}</td>
+          <td>
+            <input type="number" name="quantity_{{ forloop.counter0 }}" min="1" max="{{ component.quantity_available }}">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="submit-button">
+      <button type="submit">Issue Selected Components</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

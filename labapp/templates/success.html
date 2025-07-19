@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Success</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #1f1f1f;
+            color: rgb(0, 255, 47);
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: rgb(0, 255, 47);
+        }
+        .info {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #2b2b2b;
+        }
+        td {
+            background-color: #2a2a2a;
+        }
+        .submit-button {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .submit-button button {
+            background-color: rgb(0, 255, 47);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgb(0, 255, 47), 0 0 20px rgb(0, 255, 47);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .submit-button button:hover {
+            background-color: rgb(0, 130, 24);
+            box-shadow: 0 0 15px rgb(0, 130, 24), 0 0 30px rgb(0, 130, 24);
+            color: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <header>Manual Issue/Return Success</header>
+    <div class="container">
+        <div class="info">
+            <strong>Student:</strong> {{ student_name }} ({{ student_roll }})
+        </div>
+
+        <h2>Issued Components</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if issued_components and issued_components|length > 0 %}
+                    {% for item in issued_components %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>
+                                <span style="color:
+                                    {% if 'Issued' in item.status %}
+                                        limegreen
+                                    {% elif 'Insufficient' in item.status %}
+                                        red
+                                    {% else %}
+                                        orange
+                                    {% endif %}
+                                ">{{ item.status }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" style="color: orange;">No components issued.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <h2>Returned Components</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if return_component and return_component|length > 0 %}
+                    {% for item in return_component %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>
+                                <span style="color:
+                                    {% if 'Returned' in item.status %}
+                                        orange
+                                    {% elif 'Not Issued' in item.status or 'Already Returned' in item.status %}
+                                        red
+                                    {% else %}
+                                        gray
+                                    {% endif %}
+                                ">{{ item.status }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" style="color: gray;">None</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <div class="submit-button">
+            <a href="{% url 'student_form' %}">
+                <button>Issue/Return More</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
