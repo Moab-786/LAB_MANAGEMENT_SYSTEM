@@ -1,1 +1,1 @@
-web: gunicorn LAB_MANAGEMENT_SYSTEM.wsgi
+web: gunicorn LAB_MANAGEMENT.wsgi
